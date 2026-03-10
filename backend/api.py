@@ -1,5 +1,3 @@
-# backend/api.py
-
 import os
 import sys
 import time

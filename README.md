@@ -68,6 +68,11 @@ The CI pipeline is defined in `.github/workflows/ci.yml`. It runs automatically 
 2. **Lints** the code using `flake8` to ensure syntax correctness and style consistency.
 3. **Tests** the code by ensuring it can be compiled without errors.
 
+### Docker Image
+
+You can find the official Docker image on Docker Hub:
+[**aniqramzan/databricks-reviews**](https://hub.docker.com/r/aniqramzan/databricks-reviews)
+
 ---
 
 ## 📸 Demo & Screenshots
