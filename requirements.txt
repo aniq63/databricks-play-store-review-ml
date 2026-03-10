@@ -1,0 +1,32 @@
+# Data Engineering
+psycopg2-binary
+python-dotenv
+pandas
+sqlalchemy
+
+# Databricks Connect
+databricks-connect
+
+# ML / AI
+mlflow[databricks]>=3.1
+scikit-learn
+transformers
+torch
+joblib
+
+# Utilities
+from-root
+
+sentence-transformers
+umap-learn
+hdbscan
+keybert
+langchain
+langchain-core
+langchain-groq
+matplotlib
+seaborn
+scikit-learn
+requests
+fastapi
+uvicorn

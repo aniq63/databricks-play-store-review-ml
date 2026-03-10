@@ -1,0 +1,17 @@
+{
+    "manifest_version": 3,
+    "name": "Play Store ML Insights",
+    "version": "1.0",
+    "description": "Professional dashboard for Play Store review analysis",
+    "permissions": [
+        "activeTab",
+        "scripting"
+    ],
+    "host_permissions": [
+        "http://localhost:8000/*",
+        "https://play.google.com/*"
+    ],
+    "action": {
+        "default_popup": "popup.html"
+    }
+}

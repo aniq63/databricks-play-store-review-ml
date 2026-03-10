@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="chart.js"></script>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --accent: #10b981;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+        }
+
+        body {
+            width: 400px;
+            /* Slightly narrower for standard fit */
+            max-height: 580px;
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            background-image: radial-gradient(circle at top right, #1e293b, #0f172a);
+            color: var(--text-main);
+            padding: 16px;
+            margin: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        h3 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 1.4rem;
+            background: linear-gradient(to right, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .status-container {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 12px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            display: none;
+        }
+
+        .status-text {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .section {
+            margin-top: 16px;
+            background: var(--card-bg);
+            padding: 16px;
+            border-radius: 16px;
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 160px;
+            /* Fixed height to prevent layout jumps */
+            width: 100%;
+        }
+
+        h4 {
+            margin: 0 0 12px 0;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-dim);
+        }
+
+        .loader {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #FFF;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            display: none;
+            animation: rotation 1s linear infinite;
+        }
+
+        @keyframes rotation {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h3>Sentiment AI</h3>
+        <div
+            style="font-size: 0.7rem; background: var(--card-bg); padding: 4px 8px; border-radius: 20px; color: var(--accent); border: 1px solid var(--border);">
+            v2.0</div>
+    </div>
+
+    <button id="analyze">
+        <span class="loader" id="btnLoader"></span>
+        <span id="btnText">Analyze Reviews</span>
+    </button>
+
+    <div id="statusContainer" class="status-container">
+        <div class="status-text">
+            <span id="status">Ready</span>
+            <span id="percent">0%</span>
+        </div>
+        <div class="progress-bar">
+            <div id="progressFill" class="progress-fill"></div>
+        </div>
+    </div>
+
+    <div id="results" style="display: none;">
+        <div class="section">
+            <h4>Sentiment Distribution</h4>
+            <div class="chart-container">
+                <canvas id="sentimentChart"></canvas>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>Top Topics</h4>
+            <div class="chart-container">
+                <canvas id="topicChart"></canvas>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>Negative Issues</h4>
+            <div class="chart-container">
+                <canvas id="negativeChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div id="emptyState" class="empty-state">
+        <p>Open a Google Play Store app page and click Analyze to see insights.</p>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>

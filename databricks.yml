@@ -1,0 +1,9 @@
+bundle:
+  name: databricks-play-store-review-ml
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: https://dbc-9d07fb3d-878f.cloud.databricks.com
