@@ -5,6 +5,7 @@ import pandas as pd
 from typing import List
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from dotenv import load_dotenv
@@ -33,6 +34,15 @@ except Exception as e:
 CACHE_TTL = 3600   # 1 hour cache
 
 app = FastAPI(title="PlayStore Review Analyzer API")
+
+# Add CORS Middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # --------------------------------------------------
