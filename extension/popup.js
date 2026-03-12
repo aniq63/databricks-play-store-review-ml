@@ -90,7 +90,7 @@ analyzeBtn.addEventListener("click", async () => {
 
             }
             catch (err) {
-                updateStatus("Connection failed", 0)
+                updateStatus(`Error: ${err.message}`, 0)
                 btnLoader.style.display = 'none'
                 btnText.textContent = "Try Again"
                 analyzeBtn.disabled = false

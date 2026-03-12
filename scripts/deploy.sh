@@ -28,9 +28,19 @@ sudo docker stop backend-api || true
 sudo docker rm backend-api || true
 
 echo "Running new container..."
+# Use .env file if it exists
+ENV_FILE_FLAG=""
+if [ -f .env ]; then
+    ENV_FILE_FLAG="--env-file .env"
+    echo "Found .env file, using it for secrets."
+else
+    echo "WARNING: No .env file found. API may fail without secrets."
+fi
+
 sudo docker run -d \
     --name backend-api \
     -p 80:8000 \
+    $ENV_FILE_FLAG \
     --restart unless-stopped \
     $IMAGE_NAME
 
